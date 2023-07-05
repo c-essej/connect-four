@@ -20,11 +20,11 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
 
-  for (let i = 0; i < HEIGHT; i++){
+  for (let i = 0; i < HEIGHT; i++) {
     let row = [];
-      for (let j = 0; j < WIDTH; j++){
-        row.push(' ');
-      }
+    for (let j = 0; j < WIDTH; j++) {
+      row.push(' ');
+    }
     board.push(row);
   }
   console.log(board);
@@ -64,18 +64,18 @@ function makeHtmlBoard() {
 
   for (let y = 0; y < HEIGHT; y++) {
     // TODO: Create a table row element and assign to a "row" variable
-      let row = document.createElement('tr');
+    let row = document.createElement('tr');
 
     for (let x = 0; x < WIDTH; x++) {
       // TODO: Create a table cell element and assign to a "cell" variable
       let cell = document.createElement('td');
       // TODO: add an id, c-y-x, to the above table cell element
-        cell.setAttribute("id", `c-${y}-${x}`);
+      cell.setAttribute("id", `c-${y}-${x}`);
 
       // you'll use this later, so make sure you use c-y-x
 
       // TODO: append the table cell to the table row
-        row.append(cell);
+      row.append(cell);
     }
     // TODO: append the row to the html board
     htmlBoard.append(row);
@@ -93,6 +93,17 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+
+  let piece = document.createElement('div');
+  document.getElementById(`c-${y}-${x}`).append(piece);
+  piece.classList.add('piece');
+  if (currPlayer === 1) {
+    piece.classList.add('p1');
+    piece.classList.remove('p2');
+  } else {
+    piece.classList.add('p2');
+    piece.classList.remove('p1');
+  }
 }
 
 /** endGame: announce game end */
