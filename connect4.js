@@ -116,13 +116,34 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = +evt.target.id;
+  let isFilled = true;
+
+  let x = Number(evt.target.id[4]);
+  let y = Number(evt.target.id[2]);
+  console.log(x);
+
+  for (let y = 0; y < HEIGHT; y++){
+    for (let x = 0; x < WIDTH; x++){
+      if (board[y][x] === null) {
+        isFilled = false;
+        break;
+      }
+    }
+  }
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
+
+  // if (currPlayer === 1){
+  //   currPlayer =2
+  // } else {
+  //   currPlayer = 1;
+  // }
+
+  currPlayer = currPlayer === 1 ? 2 : 1;
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
