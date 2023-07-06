@@ -23,7 +23,7 @@ function makeBoard() {
   for (let i = 0; i < HEIGHT; i++) {
     let row = [];
     for (let j = 0; j < WIDTH; j++) {
-      row.push(' ');
+      row.push(null);
     }
     board.push(row);
   }
@@ -86,10 +86,15 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 5
-  for (let y = HEIGHT - 1; y >= 0; y--) {
-    if (board[y][x] !== null) {
-      continue;
+  for (let y = HEIGHT - 1; y > 0; y--) {
+    console.log(y);
+    console.log(board[y][x]);
+    if (board[y][x] === null){
+      return y;
     }
+    // if (board[y][x] !== null && board[y-1][x] === null) {
+    //   return y--;
+    // }
   }
   return null;
 }
@@ -100,7 +105,8 @@ function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
 
   let piece = document.createElement('div');
-  document.getElementById(`c-${y}-${x}`).append(piece);
+  let coordinates = document.getElementById(`c-${y}-${x}`)
+  coordinates.append(piece);
   piece.classList.add('piece');
   if (currPlayer === 1) {
     piece.classList.add('p1');
@@ -178,6 +184,19 @@ function checkForWin() {
 
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
+    let [y, x] = cells[0];
+    let coordinates = document.getElementById(`c-${y}-${x}`)
+    for (let cell of cells){
+      let [y, x] = cell;
+      let coordinates = document.getElementById(`c-${y}-${x}`)
+      if (coordinates.classList.contains('p1'))
+
+      if ((y > HEIGHT -1 || y < 0) || (x > WIDTH -1 || x < 0)){
+        return false;
+      }
+
+    }
+
 
   }
 
@@ -192,9 +211,9 @@ function checkForWin() {
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert;
-      let diagDL;
-      let diagDR;
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDL = [[y, x], [y - 1, x + 1], [y - 2, x + 2], [y - 3, x + 3]];
+      let diagDR = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x -3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
