@@ -89,7 +89,7 @@ function findSpotForCol(x) {
   for (let y = HEIGHT - 1; y > 0; y--) {
     console.log(y);
     console.log(board[y][x]);
-    if (board[y][x] === null){
+    if (board[y][x] === null) {
       return y;
     }
     // if (board[y][x] !== null && board[y-1][x] === null) {
@@ -105,7 +105,7 @@ function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
 
   let piece = document.createElement('div');
-  let coordinates = document.getElementById(`c-${y}-${x}`)
+  let coordinates = document.getElementById(`c-${y}-${x}`);
   coordinates.append(piece);
   piece.classList.add('piece');
   if (currPlayer === 1) {
@@ -184,20 +184,33 @@ function checkForWin() {
 
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
+    // console.log(cells);
     let [y, x] = cells[0];
-    let coordinates = document.getElementById(`c-${y}-${x}`)
-    for (let cell of cells){
-      let [y, x] = cell;
-      let coordinates = document.getElementById(`c-${y}-${x}`)
-      if (coordinates.classList.contains('p1'))
+    // console.log('y', y, 'x', x);
+    let firstCell = document.getElementById(`c-${y}-${x}`);
+    let classOfCell;
+    let isLegal = true;
+    let isAllTheSameColor = true;
+    if (firstCell.classList.contains('p1')) {
+      classOfCell = 'p1';
+    } else {
+      classOfCell = 'p2';
+    }
 
-      if ((y > HEIGHT -1 || y < 0) || (x > WIDTH -1 || x < 0)){
-        return false;
+    for (let cell of cells) {
+      let [y, x] = cell;
+      let coordinates = document.getElementById(`c-${y}-${x}`);
+      if (coordinates.classList.contains(classOfCell)) {
+        isAllTheSameColor = false;
+      }
+
+      if ((y > HEIGHT - 1 || y < 0) || (x > WIDTH - 1 || x < 0)) {
+        isLegal = false;
       }
 
     }
 
-
+    return isLegal && isAllTheSameColor;
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -213,11 +226,12 @@ function checkForWin() {
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
       let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
       let diagDL = [[y, x], [y - 1, x + 1], [y - 2, x + 2], [y - 3, x + 3]];
-      let diagDR = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x -3]];
+      let diagDR = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
-        return true;
+        // return true;
+        return false;
       }
     }
   }
